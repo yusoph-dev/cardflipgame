@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlayerController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Route::post('/postplayer', PlayerController::'postPlayer');  
+
+Route::controller(PlayerController::class)->group(function () {
+    Route::get('/rankings', 'getRankings');
+    Route::post('/postplayer', 'postPlayer');
 });

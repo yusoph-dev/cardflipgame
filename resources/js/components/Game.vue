@@ -131,6 +131,18 @@
                 <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
             </ul>
         </footer>
+
+         <!-- Background Music -->
+        <audio ref="backgroundMusic" controls autoplay loop>
+            <source :src="backgroundMusicSrc" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+
+        <!-- Click Sound -->
+        <audio ref="flipCardSound">
+            <source :src="flipSoundSrc" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
     </div>
 </template>
 
@@ -140,6 +152,8 @@
         name: "app", 
         data() { 
             return { 
+                backgroundMusicSrc: "/music/bg.mp3",
+                flipSoundSrc: "/music/cardflip.mp3",
                 count: 0, 
                 active: true, 
                 showCard: false,
@@ -250,6 +264,7 @@
 
                         //set selected card to be opened
                         this.randomCards[index].opened = true;
+                        this.$refs.flipCardSound.play();
 
                         //check if firstCard has value
                         if(this.firstCard == null){

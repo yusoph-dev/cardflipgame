@@ -1,8 +1,64 @@
 
 <template>
 
+
+    <!-- Background Music -->
+
+    <audio ref="backgroundMusic" loop>
+    <source :src="backgroundMusicSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
     
-    <div id="my-container">
+    <audio ref="easyModeSound" loop>
+    <source :src="easyModeSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+    <audio ref="averageModeSound" loop>
+    <source :src="averageModeSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+    <audio ref="hardModeSound" loop>
+    <source :src="hardModeSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+    <audio ref="impossibleModeSound" loop>
+    <source :src="impossibleModeSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+
+    
+    <!-- Flip Card Sound -->
+    <audio ref="flipCardSound">
+    <source :src="flipSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+
+    <!-- correct Card Sound -->
+    <audio ref="correctSound">
+    <source :src="correctSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+
+    <!-- ErrorFlip Card Sound -->
+    <audio ref="errorFlipCardSound">
+    <source :src="errorFlipSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+
+    <!-- Finish Game Sound -->
+    <audio ref="finishGameSound">
+    <source :src="finishGameSoundSrc" type="audio/mp3">
+    Your browser does not support the audio element.
+    </audio>
+    
+    
+    <div id="initial" v-if="initial">
+        <div class="text-center">
+            <h2>Card Flip Game</h2>
+            <button class="play-button" @click="hideInitial"> <img :src="'images/card.png'" alt="Back image" id="play-img"> Play</button>
+        </div>
+    </div>
+    <div id="my-container" v-if="!initial">
         <header class="p-3 bg-dark text-white">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -131,18 +187,6 @@
                 <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
             </ul>
         </footer>
-
-         <!-- Background Music -->
-        <audio ref="backgroundMusic" controls autoplay loop>
-            <source :src="backgroundMusicSrc" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
-
-        <!-- Click Sound -->
-        <audio ref="flipCardSound">
-            <source :src="flipSoundSrc" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
     </div>
 </template>
 
@@ -152,8 +196,18 @@
         name: "app", 
         data() { 
             return { 
-                backgroundMusicSrc: "/music/bg.mp3",
-                flipSoundSrc: "/music/cardflip.mp3",
+                initial: true,
+                backgroundMusicSrc: "audio/bg.mp3",
+                flipSoundSrc: "audio/cardflip.mp3",
+                errorFlipSoundSrc: "audio/errorflip.mp3",
+                correctSoundSrc: "audio/correct.mp3",
+                finishGameSoundSrc: "audio/levelwin.mp3",
+
+                easyModeSoundSrc: "audio/easy.mp3",
+                averageModeSoundSrc: "audio/average.mp3",
+                hardModeSoundSrc: "audio/hard.mp3",
+                impossibleModeSoundSrc: "audio/impossible.mp3",
+                
                 count: 0, 
                 active: true, 
                 showCard: false,
@@ -183,6 +237,10 @@
             this.getRankings();
         },
         methods: { 
+            hideInitial(){
+                this.initial = false;
+                this.resetGame();
+            },
             getRankings(){
                 axios.get('/rankings')
                 .then(response => {
@@ -199,20 +257,40 @@
 
                     this.difficulty = selected;
 
+                    // easy mode
                     if(this.difficulty == 1){
                         this.cards = (4 * 2);
+                        
+                        const easyModeSound = this.$refs.easyModeSound;
+                        easyModeSound.volume = 0.5; // Set volume to 50%
+                        easyModeSound.play();
                     }
                     
+                    // average mode
                     if(this.difficulty == 2){
                         this.cards = (6 * 3);
+
+                        const averageModeSound = this.$refs.averageModeSound;
+                        averageModeSound.volume = 0.5; // Set volume to 50%
+                        averageModeSound.play();
                     }
                     
+                    // hard mode
                     if(this.difficulty == 3){
                         this.cards = (6 * 8);
+
+                        const hardModeSound = this.$refs.hardModeSound;
+                        hardModeSound.volume = 0.5; // Set volume to 50%
+                        hardModeSound.play();
                     }
 
+                    // impossible mode
                     if(this.difficulty == 5){
                         this.cards = (12 * 8);
+
+                        const impossibleModeSound = this.$refs.impossibleModeSound;
+                        impossibleModeSound.volume = 0.5; // Set volume to 50%
+                        impossibleModeSound.play();
                     }
 
                     var cards = [];
@@ -252,6 +330,8 @@
 
                     console.log(this.randomCards)
                     this.startTimer()
+                    
+                    this.$refs.backgroundMusic.pause();
                 }
 
             },
@@ -279,12 +359,14 @@
 
                             //compare card from other card opened
                             if(this.firstCard.card_id == this.randomCards[index].card_id){
-
-                                this.matchedCards++;
                                 
-                                //compare matched cards to trigger reset
+                                this.$refs.correctSound.play();
+                                this.matchedCards++;
+
+                                // compare matched cards to trigger reset
                                 if(this.matchedCards == (this.cards / 2)){
-                                    // this.resetGame();
+                                    // game finished
+                                    this.$refs.finishGameSound.play();
                                     
                                     setTimeout(() => this.formSubmit(), 200);
                                 }else{
@@ -305,7 +387,7 @@
                                 this.verifying = false;
 
                             }else{
-                                
+                                this.$refs.errorFlipCardSound.play();
                                 this.verifying = true;
                                 // set timer to set the card back to front
                                 this.delayedAction(this.firstCard.index_id, index)
@@ -356,6 +438,7 @@
                     if(data != null){
                         this.totalScore = data['points'];
                         this.showModal = true;
+                        
                     }else{
                         console.log('error')
                     }
@@ -371,6 +454,21 @@
                 this.resetGame();
             },
             resetGame(){
+
+                const backgroundMusic = this.$refs.backgroundMusic;
+                backgroundMusic.volume = 0.5; // Set volume to 50%
+                backgroundMusic.play();
+                
+                if(this.difficulty == 1){
+                    this.$refs.easyModeSound.pause();
+                }else if(this.difficulty == 2){
+                    this.$refs.averageModeSound.pause();
+                }else if(this.difficulty == 3){
+                    this.$refs.hardModeSound.pause();
+                }else if(this.difficulty == 5){
+                    this.$refs.impossibleModeSound.pause();
+                }
+
                 this.count = 0; 
                 this.active = true; 
                 this.showCard = false;

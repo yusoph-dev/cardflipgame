@@ -82,3 +82,25 @@ footer{
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+#initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Style to make the play button visually appealing */
+.play-button {
+    font-size: 2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ff000d; /* Bootstrap primary color */
+    color: #fff;
+    cursor: pointer;
+}
+
+#play-img{
+    width: 50px;
+}

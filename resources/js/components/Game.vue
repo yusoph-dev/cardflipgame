@@ -91,7 +91,7 @@
             <div class="row p-4">
                 <h2>Player Name</h2>
                 <div class="btn-group btn-group-toggle form-group" data-toggle="buttons">
-                    <input type="text" class="form-control" v-model="playerName">
+                    <input type="text" class="form-control" v-model="playerName" @input="limitInput">
                 </div>
             </div>
             <div class="row p-4">
@@ -493,6 +493,10 @@
             formatTime(time) {
                 return time < 10 ? `0${time}` : `${time}`;
             },
+            limitInput() {
+                // Limit the input to 10 characters
+                this.playerName = this.playerName.slice(0, 10);
+            }
         },
         beforeDestroy() {
             // Clear the interval when the component is destroyed to prevent memory leaks

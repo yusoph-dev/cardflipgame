@@ -9,7 +9,7 @@ body{
     background-attachment: fixed; 
     background-size: 100% 100%;
 
-    font-family: "Black Rocker" !important;
+    font-family: "Black Rocker", Arial, sans-serif !important;
     text-shadow: 0px -1px 15px rgba(255, 255, 255, 1);
 
 }

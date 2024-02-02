@@ -62,7 +62,7 @@
         <header class="p-3 bg-dark text-white">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" id="hideonMobile">
+                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" v-if="difficulty == null">
                         <img class="bi me-2" width="32" height="32" role="img" aria-label="Bootstrap" :src="'images/pokeball.png'">
                     </a>
 
@@ -70,13 +70,13 @@
                         <li><a href="#" class="nav-link px-2 text-yellow"></a></li>
                     </ul> -->
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <form v-if="difficulty > 0" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                             <li style="border: 3px solid transparent; font-weight: 600;"><span class="nav-link px-2 text-white">NO. OF TURNS : {{ count }}</span></li>
                         </ul>
                     </form>
 
-                    <div class="text-end">
+                    <div v-if="difficulty > 0" class="text-end">
                         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                             <li style="border: 3px solid transparent; font-weight: 600;"><button @click="resetGame" class="nav-link px-2 bg-dark text-white">RESET</button></li>
                             <li style="border: 3px solid #CC0000; font-weight: 600;"><span class="nav-link px-4 text-white" >{{ formattedTime }}</span></li>

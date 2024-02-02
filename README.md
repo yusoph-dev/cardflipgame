@@ -4,7 +4,7 @@
 
 This app is currently deployed [here](https://yusoph.sush1.xyz).
 
-![Laptop UI](https://github.com/yusoph-dev/cardflipgame/blob/main/public/laptop-ui.png?raw=true)
+![Laptop UI](https://github.com/yusoph-dev/cardflipgame/blob/main/public/images/laptop-ui.png?raw=true)
 
 This project was bootstrapped with [Vue JS](https://github.com/vuejs).
 

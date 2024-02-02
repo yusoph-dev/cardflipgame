@@ -53,8 +53,9 @@
     
     
     <div id="initial" v-if="initial">
-        <div class="text-center">
-            <h2>Card Flip Game</h2>
+        <div class="text-center ">
+            <h2>FlipMaster Challenge</h2>
+            <div class="p-4"><h5>Embark on a thrilling journey of memory and strategy with FlipMaster Challenge, a captivating card flipping game that tests your concentration and memory skills! Dive into the challenge of pairing matching cards while aiming for the top of the leaderboard.</h5></div>
             <button class="play-button" @click="hideInitial"> <img :src="'images/card.png'" alt="Back image" id="play-img"> Play</button>
         </div>
     </div>
@@ -174,7 +175,7 @@
             <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
                 <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
             </a>
-            <span class="text-muted">© 2023 Yusoph Flip Card MINI GAME</span>
+            <span class="text-white">© 2023 Yusoph Flip Card MINI GAME</span>
             </div>
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

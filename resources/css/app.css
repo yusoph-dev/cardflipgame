@@ -26,6 +26,15 @@ body{
     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+
+.card.notflipped:hover{
+    -webkit-box-shadow: inset -1px 0px 36px 12px rgba(224,230,49,1);
+    -moz-box-shadow: inset -1px 0px 36px 12px rgba(224,230,49,1);
+    box-shadow: inset -1px 0px 36px 12px rgba(224,230,49,1);
+    filter: brightness(70%);
+}
+
 .flip-card {
     /* width: auto; */
     height: auto;
@@ -65,11 +74,11 @@ body{
 .card-back {
     transform: rotateY(180deg); /* Initially hide back side */
     position: absolute;
-    filter: brightness(95%);
+    filter: brightness(110%);
 }
 
 .darken-image{
-    filter: brightness(90%) blur(1px);
+    filter: brightness(85%) blur(1px);
     /* filter: ; */
 }
 

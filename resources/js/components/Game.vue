@@ -140,7 +140,7 @@
                 <template v-for="(item, index) in randomCards" :key="item">
 
                     <div class="flip-card p-1 " v-bind:class="{'col-md-3': (difficulty == 1), 'col-xs-3': (difficulty == 1), 'col-md-2': (difficulty == 2 ), 'col-md-1': (difficulty > 2 && difficulty < 6), 'col-xs-2': (difficulty > 1 && difficulty < 6) }" v-on:click="flipCard(index)" >
-                        <div class="card card-inner" v-bind:class="{flipped: item.opened}" > 
+                        <div class="card card-inner" v-bind:class="{flipped: item.opened, 'notflipped': (!item.opened)}" > 
                             <div class="card card-front">
                                 <img :src="'images/cards/0.png'" alt="Front image">
                             </div>
@@ -175,7 +175,7 @@
             <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
                 <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
             </a>
-            <span class="text-white">© 2023 Yusoph Flip Card MINI GAME</span>
+            <span class="text-white">© 2024 Yusoph Flip Card MINI GAME</span>
             </div>
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">

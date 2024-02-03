@@ -79,8 +79,8 @@
 
                     <div v-if="difficulty > 0" class="text-end">
                         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                            <li style="border: 3px solid transparent; font-weight: 600;"><button @click="resetGame" class="nav-link px-2 bg-dark text-white">RESET</button></li>
-                            <li style="border: 3px solid #CC0000; font-weight: 600;"><span class="nav-link px-4 text-white" >{{ formattedTime }}</span></li>
+                            <li style="border: 3px solid transparent; font-weight: 600;"><button @click="resetGame" class="nav-link px-2 btn btn-danger text-white">RESET</button></li>
+                            <li style="border: 3px solid transparent; font-weight: 600;"><span class="nav-link px-4 text-white nablafont" >{{ formattedTime }}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                     <button @click="setDifficulty(5)" type="button" class="btn btn-danger btn-lg" >IMPOSSIBLE</button>
                 </div>
             </div>
-            <div class="row p-4" v-if="(rankings.length > 0)">
+            <div class="row p-4 rankings" v-if="(rankings.length > 0)">
                 <h2>Player Rankings</h2>
                 <div class="container">
                     <table class="table table-dark table-striped">
@@ -127,7 +127,7 @@
                                     <span v-if="player.difficulty == 3" class="badge bg-warning text-dark">HARD</span>
                                     <span v-if="player.difficulty == 5" class="badge bg-danger">IMPOSSIBLE</span>
                                 </td>
-                                <td class="text-center">{{ player.points  }}</td>
+                                <td class="text-center nablafont">{{ player.points  }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -135,8 +135,8 @@
             </div>
         </div>
 
-        <div class="container" v-if="difficulty != null">
-            <div class="row" >
+        <div class="container" v-if="difficulty != null" v-bind:class="{'easy-deck': (difficulty == 1)}" >
+            <div class="row deck" >
                 <template v-for="(item, index) in randomCards" :key="item">
 
                     <div class="flip-card p-1 " v-bind:class="{'col-md-3': (difficulty == 1), 'col-xs-3': (difficulty == 1), 'col-md-2': (difficulty == 2 ), 'col-md-1': (difficulty > 2 && difficulty < 6), 'col-xs-2': (difficulty > 1 && difficulty < 6) }" v-on:click="flipCard(index)" >
@@ -161,10 +161,10 @@
                 </div>
                 <div class="modal-body">
                     <h3>{{ playerName }}</h3>
-                    <h3>Total score is: {{ totalScore }}</h3>
+                    <h3>Total score is:  <span class="nablafont">{{ totalScore }}</span> </h3>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeModal">RESET</button>
+                    <button type="button" class="btn btn-warning" @click="closeModal">RESET</button>
                 </div>
             </div>
         </div>
@@ -354,11 +354,22 @@
 
                         }else{
 
+                            var firstCardIndex = this.firstCard.index_id;
+
                             //compare card from other card opened
                             if(this.firstCard.card_id == this.randomCards[index].card_id){
                                 
                                 this.$refs.correctSound.play();
                                 this.matchedCards++;
+
+                                // perform card freeze    
+                                const performFreeze = (firstCardIndex) => {
+                                    this.randomCards[index].freezed = true;
+                                    this.randomCards[firstCardIndex].freezed = true;
+                                };
+
+                                // add delaying freeze effect
+                                setTimeout(() => performFreeze(firstCardIndex), 300);
 
                                 // compare matched cards to trigger reset
                                 if(this.matchedCards == (this.cards / 2)){
@@ -366,18 +377,6 @@
                                     this.$refs.finishGameSound.play();
                                     
                                     setTimeout(() => this.formSubmit(), 200);
-                                }else{
-
-                                    var firstCardIndex = this.firstCard.index_id;
-
-                                    // perform card freeze    
-                                    const performFreeze = (firstCardIndex) => {
-                                        this.randomCards[index].freezed = true;
-                                        this.randomCards[firstCardIndex].freezed = true;
-                                    };
-
-                                    // add delaying freeze effect
-                                    setTimeout(() => performFreeze(firstCardIndex), 300);
                                 }
 
                                 this.firstCard = null;

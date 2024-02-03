@@ -1,8 +1,14 @@
-@font-face {
+/* @font-face {
     font-family: 'Black Rocker';
     src: local('Black Rocker'), url('../fonts/blackrocker.ttf') format('ttf');
-}
+} */
   
+/* @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Nabla&family=Pixelify+Sans:wght@400;600&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
 body{
     user-select: none;
     -moz-user-select: none;
@@ -12,11 +18,23 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed; 
     background-size: 100% 100%;
-
-    font-family: 'Black Rocker', Arial, sans-serif !important;
+    font-family: 'Pixelify Sans', Arial, sans-serif;
     text-shadow: 0px -1px 15px rgba(255, 255, 255, 1);
-
 }
+
+.nablafont{
+    font-family: 'Nabla';
+}
+
+.modal-content{
+    background-color: #333;
+    border-radius: 22px;
+    border: 2px solid black;
+    box-shadow: -4px 10px 7px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 14px #222;
+    color: white;
+}
+
 .card{
     max-height: auto;
     -webkit-transform-style: preserve-3d;
@@ -29,10 +47,8 @@ body{
 
 
 .card.notflipped:hover{
-    -webkit-box-shadow: inset -1px 0px 36px 12px rgba(224,230,49,1);
-    -moz-box-shadow: inset -1px 0px 36px 12px rgba(224,230,49,1);
-    box-shadow: inset -1px 0px 36px 12px rgba(224,230,49,1);
-    filter: brightness(70%);
+    background-color: #333;
+    filter: brightness(85%);
 }
 
 .flip-card {
@@ -126,6 +142,39 @@ footer{
 
 .justify-content-lg-start {
     justify-content: space-between !important;
+}
+
+.fade{
+    display: none !important;
+}
+
+.fade.show{
+    display: flex !important;
+}
+
+.deck{
+    margin: 20px auto 75px auto ;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 22px;
+    border: 2px solid black;
+    box-shadow: -4px 10px 7px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 14px #222;
+}
+
+.bg-dark{
+    border: 2px solid black;
+    background-color: #333;
+    box-shadow: -4px 10px 7px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 14px #222;
+}
+
+.rankings{
+    margin-bottom: 75px;
+}
+
+.easy-deck{
+    max-width: 1000px;
 }
 
 /* Styles for devices with a screen width of 600 pixels or less (typical for mobile devices) */

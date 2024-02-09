@@ -27,7 +27,7 @@ Route::controller(PlayerController::class)->group(function () {
     Route::post('/postState', 'postState');
 });
 
-Route::get('/getmacshellexec',function()
+Route::get('/getmac',function()
     {
         $output = shell_exec('ifconfig');
 

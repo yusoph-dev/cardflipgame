@@ -466,6 +466,7 @@ export default {
                             // set timer to set the card back to front
                             this.delayedAction(this.firstCard.index_id, index)
 
+                            this.saveSession();
 
                         }
 
@@ -473,6 +474,7 @@ export default {
 
                     //flip count
                     this.count++;
+
                 }
             }
             // if(this.randomCards[index].opened)
@@ -498,10 +500,9 @@ export default {
                 this.firstCard = null;
                 this.verifying = false;
 
-                this.saveSession();
             }
 
-            // this.saveSession();
+            this.saveSession();
         },
         formSubmit() {
 

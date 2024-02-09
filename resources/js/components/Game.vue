@@ -53,7 +53,8 @@
         <div class="p-4">
             <h5>Embark on a thrilling journey of memory and strategy with FlipMaster Challenge, a captivating card flipping game that tests your concentration and memory skills! Dive into the challenge of pairing matching cards while aiming for the top of the leaderboard.</h5>
         </div>
-        <button class="play-button" @click="hideInitial"> <img :src="'images/card.png'" alt="Back image" id="play-img"> Play</button>
+        <button class="play-button" @click="hideInitial" v-if="hasSession == false"> <img :src="'images/card.png'" alt="Back image" id="play-img"> Play</button>
+        <button class="play-button" @click="hideInitial" v-else> <img :src="'images/card.png'" alt="Back image" id="play-img"> Continue</button>
     </div>
 </div>
 <div id="my-container" v-if="!initial">
@@ -224,6 +225,9 @@ export default {
             timerInterval: null,
             showModal: false,
             rankings: [],
+
+            hasSession: false,
+            sessionData: [],
         };
     },
 
@@ -235,12 +239,50 @@ export default {
         },
     },
     mounted() {
+        this.getSession();
         this.getRankings();
     },
     methods: {
         hideInitial() {
-            this.initial = false;
-            this.resetGame();
+            if(!this.hasSession){
+                this.initial = false;
+                this.resetGame();
+            }else{
+
+                this.initial = (this.sessionData.initial == 0) ? false : true;
+                this.count = this.sessionData.count;
+                this.active = (this.sessionData.active == 0) ? false : true;
+                // this.showCard = this.sessionData.initial;
+                this.difficulty = this.sessionData.difficulty;
+                this.cards = this.sessionData.cards;
+                this.randomCards = this.sessionData.random_cards;
+                this.matchedCards = this.sessionData.matched_cards;
+                this.firstCard = this.sessionData.first_card;
+                this.verifying = false;
+                this.playerName = this.sessionData.player_name;
+                this.timerSeconds = this.sessionData.timer_seconds;
+                this.totalScore = this.sessionData.total_score;
+                this.timerInterval = this.sessionData.timer_interval;
+                this.showModal = false;
+            }
+        },
+        getSession() {
+            axios.get('/session')
+                .then(response => {
+                    this.hasSession = true;
+                    this.sessionData = response.data.session;
+
+                    console.log(this.sessionData)
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 404) {
+                        // Handle 404 error
+                        console.log('Resource not found.');
+                    } else {
+                        // Handle other errors
+                        console.error('An error occurred:', error.message);
+                    }
+                });
         },
         getRankings() {
             axios.get('/rankings')
@@ -252,23 +294,23 @@ export default {
                     console.error('Error fetching rankings:', error);
                 });
         },
-        saveState() {
-            axios.post('postState', {
+        saveSession() {
+            axios.post('postSession', {
                 initial: this.initial,
                 count: this.count,
                 active: this.active,
                 showCard: this.showCard,
                 difficulty: this.difficulty,
-                cards: this.cards,
-                randomCards: this.randomCards,
-                matchedCards: this.matchedCards,
-                firstCard: this.firstCard,
+                cards: JSON.stringify(this.cards),
+                random_cards: JSON.stringify(this.randomCards),
+                matched_cards: this.matchedCards,
+                first_card: JSON.stringify(this.firstCard),
                 verifying: this.verifying,
-                playerName: this.playerName,
-                timerSeconds: this.timerSeconds,
-                totalScore: this.totalScore,
-                timerInterval: this.timerInterval,
-                showModal: this.showModal,
+                player_name: this.playerName,
+                timer_seconds: this.timerSeconds,
+                total_score: this.totalScore,
+                timer_interval: this.timerInterval,
+                show_modal: this.showModal,
             })
             .then((response) => {
 
@@ -358,6 +400,8 @@ export default {
                 this.startTimer()
 
                 this.$refs.backgroundMusic.pause();
+
+                this.saveSession();
             }
 
         },
@@ -381,7 +425,7 @@ export default {
                         this.verifying = false;
                         console.log(this.firstCard)
 
-                        this.saveState();
+                        this.saveSession();
 
                     } else {
 
@@ -402,7 +446,6 @@ export default {
                             // add delaying freeze effect
                             setTimeout(() => performFreeze(firstCardIndex), 300);
 
-                            this.saveState();
 
                             // compare matched cards to trigger reset
                             if (this.matchedCards == (this.cards / 2)) {
@@ -415,11 +458,14 @@ export default {
                             this.firstCard = null;
                             this.verifying = false;
 
+                            this.saveSession();
+
                         } else {
                             this.$refs.errorFlipCardSound.play();
                             this.verifying = true;
                             // set timer to set the card back to front
                             this.delayedAction(this.firstCard.index_id, index)
+
 
                         }
 
@@ -432,6 +478,8 @@ export default {
             // if(this.randomCards[index].opened)
             // this.showCard = !this.showCard; 
             // // alert(this.showCard)
+
+            this.saveSession();
         },
         delayedAction(firstCard, secondCard) {
 
@@ -449,8 +497,11 @@ export default {
 
                 this.firstCard = null;
                 this.verifying = false;
+
+                this.saveSession();
             }
 
+            // this.saveSession();
         },
         formSubmit() {
 
@@ -458,6 +509,7 @@ export default {
                     name: this.playerName,
                     seconds: this.timerSeconds,
                     difficulty: this.difficulty,
+                    flips: this.count,
                 })
                 .then((response) => {
                     var data = response.data;

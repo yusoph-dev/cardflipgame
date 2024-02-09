@@ -20,17 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::post('/postplayer', PlayerController::'postPlayer');  
 
 Route::controller(PlayerController::class)->group(function () {
     Route::get('/rankings', 'getRankings');
+    Route::get('/session', 'getSession');
     Route::post('/postplayer', 'postPlayer');
-    Route::post('/postState', 'postState');
-});
-Route::get('/get-cookies', function (Request $request) {
-    // Access cookies from the request
-    $cookies = $request->cookie('laravel_session');
-
-    // Display cookies
-    dd($cookies);
+    Route::post('/postSession', 'postSession');
 });

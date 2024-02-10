@@ -26,4 +26,5 @@ Route::controller(PlayerController::class)->group(function () {
     Route::get('/session', 'getSession');
     Route::post('/postplayer', 'postPlayer');
     Route::post('/postSession', 'postSession');
+    Route::post('/clearSession', 'clearSession');
 });

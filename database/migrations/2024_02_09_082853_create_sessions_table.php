@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('laravel_session')->nullable();
             
             $table->boolean('initial')->nullable();
-            $table->smallInteger('count')->default(0);
+            $table->bigInteger('count')->default(0);
             $table->boolean('active')->comment('active card')->default(false);
             $table->smallInteger('difficulty')->nullable();
             $table->json('cards')->nullable();
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->json('first_card')->nullable();
             $table->boolean('verifying')->default(false);
             $table->string('player_name')->nullable();
-            $table->smallInteger('timer_seconds')->nullable();
-            $table->smallInteger('total_score')->nullable();
+            $table->bigInteger('timer_seconds')->nullable();
+            $table->bigInteger('total_score')->nullable();
             $table->smallInteger('timer_interval')->nullable();
             $table->boolean('show_modal')->default(false);
             $table->timestamps();

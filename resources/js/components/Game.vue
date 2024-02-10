@@ -47,14 +47,16 @@
     Your browser does not support the audio element.
 </audio>
 
-<div id="initial" v-if="initial">
-    <div class="text-center ">
-        <h2>FlipMaster Challenge</h2>
-        <div class="p-4">
-            <h5>Embark on a thrilling journey of memory and strategy with FlipMaster Challenge, a captivating card flipping game that tests your concentration and memory skills! Dive into the challenge of pairing matching cards while aiming for the top of the leaderboard.</h5>
+<div id="initial" v-if="initial" class="container">
+    <div class="row">
+        <div class="text-center col-md-8 deck">
+            <h1 class="nablafont p-4">FlipMaster Challenge</h1>
+            <div class="p-4">
+                <h5 class="text-white">Embark on a thrilling journey of memory and strategy with FlipMaster Challenge, a captivating card flipping game that tests your concentration and memory skills! Dive into the challenge of pairing matching cards while aiming for the top of the leaderboard.</h5>
+            </div>
+            <button class="play-button btn btn-danger" @click="hideInitial" v-if="hasSession == false"> <img :src="'images/card.png'" alt="Back image" id="play-img"> Play</button>
+            <button class="play-button btn btn-danger" @click="hideInitial" v-else> <img :src="'images/card.png'" alt="Back image" id="play-img"> Continue</button>
         </div>
-        <button class="play-button" @click="hideInitial" v-if="hasSession == false"> <img :src="'images/card.png'" alt="Back image" id="play-img"> Play</button>
-        <button class="play-button" @click="hideInitial" v-else> <img :src="'images/card.png'" alt="Back image" id="play-img"> Continue</button>
     </div>
 </div>
 <div id="my-container" v-if="!initial">
@@ -264,6 +266,7 @@ export default {
                 this.totalScore = this.sessionData.total_score;
                 this.timerInterval = this.sessionData.timer_interval;
                 this.showModal = false;
+                this.startTimer();
             }
         },
         getSession() {
@@ -401,7 +404,7 @@ export default {
 
                 this.$refs.backgroundMusic.pause();
 
-                this.saveSession();
+                this.debouncedSaveSession();
             }
 
         },
@@ -425,7 +428,7 @@ export default {
                         this.verifying = false;
                         console.log(this.firstCard)
 
-                        this.saveSession();
+                        this.debouncedSaveSession();
 
                     } else {
 
@@ -458,7 +461,7 @@ export default {
                             this.firstCard = null;
                             this.verifying = false;
 
-                            this.saveSession();
+                            this.debouncedSaveSession();
 
                         } else {
                             this.$refs.errorFlipCardSound.play();
@@ -466,7 +469,7 @@ export default {
                             // set timer to set the card back to front
                             this.delayedAction(this.firstCard.index_id, index)
 
-                            this.saveSession();
+                            this.debouncedSaveSession();
 
                         }
 
@@ -481,8 +484,19 @@ export default {
             // this.showCard = !this.showCard; 
             // // alert(this.showCard)
 
-            this.saveSession();
+            this.debouncedSaveSession();
         },
+
+        debouncedSaveSession() {
+            // Clear the previous timeout to avoid multiple invocations
+            clearTimeout(this.debounceSaveSession);
+
+            // Set a new timeout for 1 second (adjust as needed)
+            this.debounceSaveSession = setTimeout(() => {
+                this.saveSession();
+            }, 1000); // Adjust the timeout duration as needed
+        },
+
         delayedAction(firstCard, secondCard) {
 
             console.log(firstCard)
@@ -502,29 +516,29 @@ export default {
 
             }
 
-            this.saveSession();
+            this.debouncedSaveSession();
         },
         formSubmit() {
 
             axios.post('/postplayer', {
-                    name: this.playerName,
-                    seconds: this.timerSeconds,
-                    difficulty: this.difficulty,
-                    flips: this.count,
-                })
-                .then((response) => {
-                    var data = response.data;
-                    if (data != null) {
-                        this.totalScore = data['points'];
-                        this.showModal = true;
+                name: this.playerName,
+                seconds: this.timerSeconds,
+                difficulty: this.difficulty,
+                flips: this.count,
+            })
+            .then((response) => {
+                var data = response.data;
+                if (data != null) {
+                    this.totalScore = data['points'];
+                    this.showModal = true;
 
-                    } else {
-                        console.log('error')
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                } else {
+                    console.log('error')
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
         },
         closeModal() {
@@ -563,6 +577,9 @@ export default {
             this.timerInterval = null;
             this.showModal = false;
             this.getRankings();
+
+            axios.post('/clearSession')
+
         },
         startTimer() {
             // Set interval to update the timer every second

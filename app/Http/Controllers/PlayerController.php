@@ -144,4 +144,9 @@ class PlayerController extends Controller
 
         return response()->json(['message' => 'Session created or updated successfully'], 201);
     }
+
+    public function clearSession(Request $request){
+        $session_id = $request->cookie('laravel_session');
+        Session::where('laravel_session', $session_id)->delete();
+    }
 }

@@ -228,4 +228,8 @@ footer{
     #hideonMobile{
         display: none !important;
     }
+
+    .pmobile{
+        padding: 1em;
+    }
 }

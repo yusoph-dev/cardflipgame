@@ -48,7 +48,7 @@
 </audio>
 
 <div id="initial" v-if="initial" class="container">
-    <div class="row">
+    <div class="row pmobile">
         <div class="text-center col-md-8 deck maindeck">
             <h1 class="nablafont p-4">FlipMaster Challenge</h1>
             <div class="p-4">
@@ -157,7 +157,7 @@
 
     <!-- Vertically centered modal -->
     <div class="modal fade modal-dialog modal-dialog-centered" id="congratsModal" v-bind:class="{ 'show': showModal }">
-        <div class="modal-content">
+        <div class="modal-content maindeck">
             <div class="modal-header">
                 <h4 class="modal-title" id="exampleModalCenterTitle">CONGRATULATIONS</h4>
             </div>

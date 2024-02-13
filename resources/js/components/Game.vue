@@ -48,8 +48,13 @@
 </audio>
 
 <div id="initial" v-if="initial" class="container">
+<<<<<<< HEAD
     <div class="row pmobile">
         <div class="text-center col-md-8 deck maindeck">
+=======
+    <div class="row p-4">
+        <div class="text-center col-md-8 deck">
+>>>>>>> df9f748 (update: remove loggings)
             <h1 class="nablafont p-4">FlipMaster Challenge</h1>
             <div class="p-4">
                 <h5 class="text-white">Embark on a thrilling journey of memory and strategy with FlipMaster Challenge, a captivating card flipping game that tests your concentration and memory skills! Dive into the challenge of pairing matching cards while aiming for the top of the leaderboard.</h5>
@@ -276,8 +281,6 @@ export default {
                 .then(response => {
                     this.hasSession = true;
                     this.sessionData = response.data.session;
-
-                    console.log(this.sessionData)
                 })
                 .catch(error => {
                     if (error.response && error.response.status === 404) {
@@ -401,7 +404,6 @@ export default {
                     })
                 }
 
-                console.log(this.randomCards)
                 this.startTimer()
 
                 this.$refs.backgroundMusic.pause();
@@ -428,7 +430,6 @@ export default {
                         this.firstCard = this.randomCards[index];
 
                         this.verifying = false;
-                        console.log(this.firstCard)
 
                         this.debouncedSaveSession();
 
@@ -501,15 +502,12 @@ export default {
 
         delayedAction(firstCard, secondCard) {
 
-            console.log(firstCard)
-
             // Set the duration of the timer in milliseconds (.7 seconds)
             setTimeout(() => performAction(firstCard, secondCard), 700);
 
             // Function to be executed after the timer
             const performAction = (firstCard, secondCard) => {
 
-                console.log(firstCard);
                 this.randomCards[firstCard].opened = false;
                 this.randomCards[secondCard].opened = false;
 

@@ -232,4 +232,8 @@ footer{
     .pmobile{
         padding: 1em;
     }
+
+    .nablafont{
+        color: yellow !important;
+    }
 }

@@ -240,4 +240,8 @@ footer{
         font-family: Bungee Shade;
         color: yellow !important;
     }
+
+    .table>:not(caption)>*>* {
+        padding: 0.2rem !important;
+    }
 }

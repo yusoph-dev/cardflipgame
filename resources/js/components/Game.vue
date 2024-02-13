@@ -49,7 +49,7 @@
 
 <div id="initial" v-if="initial" class="container">
     <div class="row">
-        <div class="text-center col-md-8 deck">
+        <div class="text-center col-md-8 deck maindeck">
             <h1 class="nablafont p-4">FlipMaster Challenge</h1>
             <div class="p-4">
                 <h5 class="text-white">Embark on a thrilling journey of memory and strategy with FlipMaster Challenge, a captivating card flipping game that tests your concentration and memory skills! Dive into the challenge of pairing matching cards while aiming for the top of the leaderboard.</h5>
@@ -111,6 +111,7 @@
                         <tr>
                             <th class="text-center" scope="col">#</th>
                             <th class="text-center" scope="col">Name</th>
+                            <th class="text-center" scope="col">Flips</th>
                             <th class="text-center" scope="col">Time</th>
                             <th class="text-center" scope="col">Difficulty</th>
                             <th class="text-center" scope="col">Score</th>
@@ -120,6 +121,7 @@
                         <tr v-for="(player, index) in rankings" :key="player.id">
                             <th class="text-center" scope="row">{{ index + 1 }}</th>
                             <td class="text-center">{{ player.name }}</td>
+                            <td class="text-center">{{ player.flips }}</td>
                             <td class="text-center">{{ player.seconds }}</td>
                             <td class="text-center">
                                 <span v-if="player.difficulty == 1" class="badge bg-success">EASY</span>

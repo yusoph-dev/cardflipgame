@@ -76,22 +76,24 @@ class PlayerController extends Controller
             'flips' => 'numeric|min:0'
         ]);
 
-        // set base maximum points
-        $maxPoints = 33333;
+        $maxFlips = 1999;
+        $maxTime = 1800;
+        $level = $validatedData['difficulty'];
+        $flips = $validatedData['flips'];
+        $seconds = $validatedData['seconds'];
 
-        // get raw maximum points
-        $points = max(0, $maxPoints - $validatedData['seconds'] * ($maxPoints / 3600));
+        // ($maxFlips * DIFFICULTY) - NO_OF_FLIPS = FLIP_POINTS
+        // ($maxTime * DIFFICULTY) * NO_OF_SECONDS = TIME_POINTS
+        // FLIP_POINTS + TIME_POINTS = BASE_POINT
+        // BASE_POINT * DIFFICULTY = TOTALPOINTS
 
-        // Ensure points are not negative
-        $getCeiling = max($points, 0);
+        $points = round(((($maxFlips * $level) - $flips) + (($maxTime * $level) - $seconds)) * $level);
 
-        // Multiply points based on the difficulty selected
-        $finalPoint = round($getCeiling * $validatedData['difficulty']);
 
         $newRecord = new Record;
         $newRecord->name = $validatedData['name'];
         $newRecord->difficulty = $validatedData['difficulty'];
-        $newRecord->points = $finalPoint;
+        $newRecord->points = $points;
         $newRecord->seconds = $validatedData['seconds'];
         $newRecord->flips = $validatedData['flips'];
         $newRecord->save();
@@ -108,7 +110,7 @@ class PlayerController extends Controller
             $session_status = true;
         }
 
-        return array('success' => true, 'last_insert_id' => $newRecord->id, 'points' => $finalPoint, 'session_delete', $session_status);
+        return array('success' => true, 'last_insert_id' => $newRecord->id, 'points' => $points, 'session_delete', $session_status);
     }
 
     /**  

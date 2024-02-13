@@ -486,7 +486,7 @@ export default {
             // this.showCard = !this.showCard; 
             // // alert(this.showCard)
 
-            this.debouncedSaveSession();
+            // this.debouncedSaveSession();
         },
 
         debouncedSaveSession() {
